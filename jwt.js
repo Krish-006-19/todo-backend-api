@@ -1,0 +1,22 @@
+const { sign, verify } = require("jsonwebtoken");
+
+function createToken(user) {
+  const accesstoken = sign({ user: user.email, id: user.id }, "Krish123");
+  return accesstoken;
+}
+
+async function verifyToken(req, res, next) {
+  const token = req.cookies["accesstoken"];
+  if (!token) return res.status(401).json({ msg: "Unauthorized access!" });
+  try {
+    const validToken = verify(token, "Krish123");
+    if (validToken) {
+      req.user = validToken;
+      next();
+    }
+  } catch (error) {
+    return res.status(401).json({ msg: error.message });
+  }
+}
+
+module.exports = { createToken, verifyToken };
