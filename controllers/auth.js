@@ -30,18 +30,26 @@ async function findUser(req, res) {
 async function addUser(req, res) {
   try {
     const { first_name, last_name, email, password } = req.body;
-    if (!first_name || !last_name || !email || !password)
-      return res.json({ msg: "Please Enter all the fields!" });
-    bcrypt.hash(password, 7, async (err, hash) => {
-      try {
-        await User.create({ first_name, last_name, email, password: hash });
-        return res.status(201).json({ msg: "User Registered Successfully!" });
-      } catch (error) {
-        return res.status(500).json({ msg: "User already exists!" });
-      }
+    if (!first_name || !last_name || !email || !password) {
+      return res.status(400).json({ msg: "Please enter all fields!" });
+    }
+
+    const hash = await bcrypt.hash(password, 7);
+    const user = await User.create({
+      first_name,
+      last_name,
+      email,
+      password: hash,
+    });
+
+    return res.status(201).json({
+      msg: "User registered successfully!",
+      user, // optional
     });
   } catch (error) {
+    if (error.code === 11000) return res.status(409).json({ msg: "User already exists!" });
     console.error(error);
+    return res.status(500).json({ msg: "Server error" });
   }
 }
 

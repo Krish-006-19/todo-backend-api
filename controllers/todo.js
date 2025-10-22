@@ -25,7 +25,7 @@ async function addTodo(req, res) {
         user_todos: [{
           title,
           description,
-          priority: priority || "Low",
+          priority: priority || "low",
           due_date: due_date || new Date(),
         }],
       });
@@ -33,7 +33,7 @@ async function addTodo(req, res) {
       todo.user_todos.push({
         title,
         description,
-        priority: priority || "Low",
+        priority: priority || "low",
         due_date: due_date || new Date(),
       });
       await todo.save();
@@ -47,7 +47,7 @@ async function addTodo(req, res) {
 }
 async function updateTodo(req, res) {
   try {
-    const { title, description, priority, due_date, completed, _id } = req.body;
+    const { title, description, priority, due_date, completed} = req.body;
     const todo = await Todo.findByIdAndUpdate(
       req.params.id,
       {
@@ -60,11 +60,12 @@ async function updateTodo(req, res) {
               },
       },
       {
-        arrayFilters: [{ "elem._id": _id}],
+        arrayFilters: [{ "elem._id": req.params.subid }],
         new: true,
         timestamps:false
       }
     );
+    // await todo.save();
     if (!todo) return res.status(404).json({ msg: "user not found!" });
     return res.status(201).json({ msg: "edited successfully!" });
   } catch (err) {
@@ -74,11 +75,11 @@ async function updateTodo(req, res) {
 
 async function deleteTodo(req, res) {
   try {
-    const { _id } = req.body; 
+    const { _id } = req.params; 
     const todo = await Todo.findOne({ user: req.user.id });
     if (!todo) return res.status(404).json({ msg: "Todo not found!" });
 
-    todo.user_todos = todo.user_todos.filter(t => t._id !== _id);
+    todo.user_todos = todo.user_todos.filter(t => t._id.toString() !== _id);
     await todo.save();
 
     return res.status(200).json({ msg: "Todo deleted successfully!", todo });
