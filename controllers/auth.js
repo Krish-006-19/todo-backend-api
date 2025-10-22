@@ -43,8 +43,7 @@ async function addUser(req, res) {
     });
 
     return res.status(201).json({
-      msg: "User registered successfully!",
-      user, // optional
+      msg: "User registered successfully!"
     });
   } catch (error) {
     if (error.code === 11000) return res.status(409).json({ msg: "User already exists!" });
@@ -53,12 +52,4 @@ async function addUser(req, res) {
   }
 }
 
-async function deleteAll(req, res) {
-  try {
-    await User.deleteMany({});
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-module.exports = { getAllUsers, findUser, addUser, deleteAll };
+module.exports = { getAllUsers, findUser, addUser };
