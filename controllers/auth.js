@@ -19,8 +19,21 @@ async function findUser(req, res) {
     if (!user) return res.status(404).json({ msg: "User not found!" });
     const ismatch = await bcrypt.compare(password, user.password);
     if (!ismatch) return res.status(400).json({ msg: "Invalid Credentials!" });
-    const accessToken = createToken(user);
-    res.cookie("accesstoken", accessToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    const { accessToken, refreshToken } = createTokens(user);
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict"
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict"
+    });
     return res.status(200).json({ user });
   } catch (error) {
     console.error(error);
