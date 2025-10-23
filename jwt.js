@@ -2,8 +2,7 @@ const { sign, verify } = require("jsonwebtoken");
 
 function createToken(user) {
   const accesstoken = sign({ id: user.id }, "access-secret"),{ expiresIn: "1h" };
-    const refreshtoken = sign({ id: user.id }, "refresh-secret",{ expiresIn: "7d" });
-  return { accesstoken, refreshtoken };
+  return accesstoken;
 }
 
 async function verifyToken(req, res, next) {
