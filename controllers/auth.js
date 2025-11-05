@@ -26,8 +26,7 @@ async function findUser(req, res) {
     res.cookie("accessToken", accessToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       httpOnly: true,
-      secure: true,
-      sameSite: "Strict"
+      secure: true
     });
 
     return res.status(200).json({ user });
