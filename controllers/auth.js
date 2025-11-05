@@ -19,8 +19,10 @@ async function findUser(req, res) {
     if (!user) return res.status(404).json({ msg: "User not found!" });
     const ismatch = await bcrypt.compare(password, user.password);
     if (!ismatch) return res.status(400).json({ msg: "Invalid Credentials!" });
-    const accessToken = createToken(user);
-    res.cookie("accesstoken", accessToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie("accesstoken", createToken(user), {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
     return res.status(200).json({ user });
   } catch (error) {
     console.error(error);
@@ -35,19 +37,17 @@ async function addUser(req, res) {
     }
 
     const hash = await bcrypt.hash(password, 7);
-    const user = await User.create({
+    await User.create({
       first_name,
       last_name,
       email,
       password: hash,
     });
 
-    return res.status(201).json({
-      msg: "User registered successfully!",
-      user, // optional
-    });
+    return res.status(201).json({ msg: "User registered successfully!" });
   } catch (error) {
-    if (error.code === 11000) return res.status(409).json({ msg: "User already exists!" });
+    if (error.code === 11000)
+      return res.status(409).json({ msg: "User already exists!" });
     console.error(error);
     return res.status(500).json({ msg: "Server error" });
   }

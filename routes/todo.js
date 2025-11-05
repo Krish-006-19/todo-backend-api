@@ -6,5 +6,4 @@ router.get("/", verifyToken, getAllTodos);
 router.post("/", verifyToken, addTodo);
 router.patch("/:id/:subid", verifyToken, updateTodo);
 router.delete("/:_id", verifyToken, deleteTodo);
-
 module.exports = router;

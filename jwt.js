@@ -1,7 +1,7 @@
 const { sign, verify } = require("jsonwebtoken");
 
 function createToken(user) {
-  const accesstoken = sign({ user: user.email, id: user.id }, "Krish123");
+  const accesstoken = sign({ id: user.id }, "Krish123");
   return accesstoken;
 }
 
