@@ -23,7 +23,7 @@ async function findUser(req, res) {
 
     const accessToken = createToken(user);
 
-  res.cookie("accessToken", token, {
+  res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: true,          // 👈 Required on Render (HTTPS)
     sameSite: "None",      // 👈 Required for cross-domain cookies
