@@ -23,12 +23,12 @@ async function findUser(req, res) {
 
     const accessToken = createToken(user);
 
-    res.cookie("accessToken", accessToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict"
-    });
+  res.cookie("accessToken", token, {
+    httpOnly: true,
+    secure: true,          // 👈 Required on Render (HTTPS)
+    sameSite: "None",      // 👈 Required for cross-domain cookies
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
 
     return res.status(200).json({ user });
   } catch (error) {
