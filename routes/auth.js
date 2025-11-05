@@ -3,11 +3,10 @@ const router = express.Router();
 const {
   getAllUsers,
   findUser,
-  addUser,
-  deleteAll,
+  addUser
 } = require("../controllers/auth");
 
-router.route("/").get(getAllUsers).delete(deleteAll);
+router.get('/',getAllUsers);
 router.post('/register', addUser);
 router.post('/login', findUser);
 

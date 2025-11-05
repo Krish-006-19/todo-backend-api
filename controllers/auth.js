@@ -19,9 +19,19 @@ async function findUser(req, res) {
     if (!user) return res.status(404).json({ msg: "User not found!" });
     const ismatch = await bcrypt.compare(password, user.password);
     if (!ismatch) return res.status(400).json({ msg: "Invalid Credentials!" });
+<<<<<<< HEAD
     res.cookie("accesstoken", createToken(user), {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+=======
+    const accessToken = createTokens(user);
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict"
+>>>>>>> e30e51ce382c4db29108a4cdbc2723e5f3282ac1
     });
     return res.status(200).json({ user });
   } catch (error) {
@@ -44,7 +54,13 @@ async function addUser(req, res) {
       password: hash,
     });
 
+<<<<<<< HEAD
     return res.status(201).json({ msg: "User registered successfully!" });
+=======
+    return res.status(201).json({
+      msg: "User registered successfully!"
+    });
+>>>>>>> e30e51ce382c4db29108a4cdbc2723e5f3282ac1
   } catch (error) {
     if (error.code === 11000)
       return res.status(409).json({ msg: "User already exists!" });
@@ -53,12 +69,4 @@ async function addUser(req, res) {
   }
 }
 
-async function deleteAll(req, res) {
-  try {
-    await User.deleteMany({});
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-module.exports = { getAllUsers, findUser, addUser, deleteAll };
+module.exports = { getAllUsers, findUser, addUser };
