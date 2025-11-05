@@ -7,7 +7,15 @@ mongoose
   .then(() => console.log("Mongo connected!"))
   .catch((err) => console.error(err));
 
-app.use(require("cors")({}));
+// app.use(require("cors")({}));
+
+app.use(require("cors")({
+  origin: [
+    "http://localhost:5173",
+    "https://todoapp-0345.netlify.app"
+  ],
+  credentials: true
+}));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
