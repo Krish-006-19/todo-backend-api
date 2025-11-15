@@ -23,11 +23,9 @@ async function findUser(req, res) {
 
     const accessToken = createToken(user);
 
-  res.cookie("accessToken", token, {
+  res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: true,          // 👈 Required on Render (HTTPS)
-    sameSite: "None",      // 👈 Required for cross-domain cookies
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000, 
   });
 
     return res.status(200).json({ user });
