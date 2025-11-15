@@ -1,0 +1,40 @@
+services:
+  backend:
+    build: .
+    #find dockerfile in current directory
+    container_name: todo-backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      MONGO_URL: mongodb://mongo:27017/Todoapp
+    depends_on: 
+    # Ensure that MongoDB starts before the backend
+      - mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  mongo:
+    image: mongo:7
+    container_name: todo-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: todoapp
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:alpine
+    container_name: todo-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:
