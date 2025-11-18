@@ -2,11 +2,14 @@ const Todo = require("../models/todo");
 
 async function getAllTodos(req, res) {
   try {
-    const todo = await Todo.findById(req.params.id);
-    if (!todo) return res.json({ msg: "No data!" });
-    else return res.json({ todo });
+    // Return only the todos that belong to the authenticated user
+    const todos = await Todo.findOne({ user: req.user.id });
+    if (!todos) return res.json({ todo: [] });
+    // keep response shape consistent with previous behaviour (an array of todo documents)
+    return res.json({ todo: [todos] });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ msg: 'Server error' });
   }
 }
 
