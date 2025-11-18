@@ -6,7 +6,7 @@ function createToken(user) {
 }
 
 async function verifyToken(req, res, next) {
-  const token = req.cookies["accesstoken"];
+  const token = req.cookies["accessToken"];
   if (!token) return res.status(401).json({ msg: "Unauthorized access!" });
   try {
     const validToken = verify(token, "Krish123");
