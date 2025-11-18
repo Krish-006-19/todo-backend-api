@@ -3,7 +3,6 @@ const { sign, verify } = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 function createToken(user) {
-  // Token payload contains the user id; sign with secret and set an expiry
   const accesstoken = sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
   return accesstoken;
 }
