@@ -2,8 +2,8 @@ const Todo = require("../models/todo");
 
 async function getAllTodos(req, res) {
   try {
-    const todo = await Todo.find();
-    if (!todo[0]) return res.json({ msg: "No data!" });
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) return res.json({ msg: "No data!" });
     else return res.json({ todo });
   } catch (error) {
     console.error(error);
