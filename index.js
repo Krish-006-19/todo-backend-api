@@ -15,7 +15,8 @@ mongoose
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://frontend-todoapp1.netlify.app/"
+    "https://frontend-todoapp1.netlify.app",
+    "https://todofrontend-efk0.onrender.com"
   ],
   credentials: true
 }));
