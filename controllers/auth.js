@@ -12,30 +12,49 @@ async function getAllUsers(req, res) {
   }
 }
 
+// async function findUser(req, res) {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(404).json({ msg: "User not found!" });
+
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) return res.status(400).json({ msg: "Invalid Credentials!" });
+
+//     const accessToken = createToken(user);
+
+//   // res.cookie("accessToken", accessToken, {
+//   //   httpOnly: true,
+//   //   secure: true,
+//   //   sameSite: "none",
+//   //   maxAge: 7 * 24 * 60 * 60 * 1000, 
+//   // });
+//   res.cookie("accessToken", accessToken, {
+//   httpOnly: true,            
+//   secure: true,             
+//   sameSite: "none",        
+//   maxAge: 7 * 24 * 60 * 60 * 1000, 
+//   path: "/",
+// });
+
+// controllers/auth.js
 async function findUser(req, res) {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ msg: "User not found!" });
-
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid Credentials!" });
-
+    
     const accessToken = createToken(user);
-
-  // res.cookie("accessToken", accessToken, {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: "none",
-  //   maxAge: 7 * 24 * 60 * 60 * 1000, 
-  // });
-  res.cookie("accessToken", accessToken, {
-  httpOnly: true,            
-  secure: true,             
-  sameSite: "none",        
-  maxAge: 7 * 24 * 60 * 60 * 1000, 
-  path: "/",
-});
+    
+    // ✅ Send token in response body instead of cookie
+    return res.status(200).json({ user, accessToken });
+  } catch (error) {
+    console.error(error);
+  }
+}
 
     return res.status(200).json({ user });
   } catch (error) {
