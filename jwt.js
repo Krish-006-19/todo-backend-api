@@ -8,9 +8,27 @@ function createToken(user) {
   return accesstoken;
 }
 
+// async function verifyToken(req, res, next) {
+//   const token = req.cookies["accessToken"];
+//   if (!token) return res.status(401).json({ msg: "Unauthorized access!" });
+//   try {
+//     const validToken = verify(token, JWT_SECRET);
+//     if (validToken) {
+//       req.user = validToken;
+//       next();
+//     }
+//   } catch (error) {
+//     return res.status(401).json({ msg: error.message });
+//   }
+// }
+// jwt.js
 async function verifyToken(req, res, next) {
-  const token = req.cookies["accessToken"];
+  // ✅ Check Authorization header instead of cookie
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+  
   if (!token) return res.status(401).json({ msg: "Unauthorized access!" });
+  
   try {
     const validToken = verify(token, JWT_SECRET);
     if (validToken) {
