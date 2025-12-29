@@ -23,12 +23,19 @@ async function findUser(req, res) {
 
     const accessToken = createToken(user);
 
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: "none",
+  //   maxAge: 7 * 24 * 60 * 60 * 1000, 
+  // });
   res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    maxAge: 7 * 24 * 60 * 60 * 1000, 
-  });
+  httpOnly: true,            
+  secure: true,             
+  sameSite: "none",        
+  maxAge: 7 * 24 * 60 * 60 * 1000, 
+  path: "/",                 
+});
 
     return res.status(200).json({ user });
   } catch (error) {
