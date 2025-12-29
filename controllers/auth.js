@@ -37,6 +37,13 @@ async function getAllUsers(req, res) {
 //   path: "/",
 // });
 
+
+  //   return res.status(200).json({ user });
+  // } catch (error) {
+  //   console.error(error);
+  // }
+// }
+
 // controllers/auth.js
 async function findUser(req, res) {
   try {
@@ -51,12 +58,6 @@ async function findUser(req, res) {
     
     // ✅ Send token in response body instead of cookie
     return res.status(200).json({ user, accessToken });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-    return res.status(200).json({ user });
   } catch (error) {
     console.error(error);
   }
